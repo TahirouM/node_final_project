@@ -4,16 +4,24 @@ const API_URL = process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/a
 const E2E_EMAIL = 'e2e-user@smartidentity.test'
 const E2E_PASSWORD = 'e2epassword123'
 
-// Create the test user via API once before all tests
+// Wait for backend to be ready then create the test user
 test.beforeAll(async () => {
   const ctx = await request.newContext()
-  await ctx.post(`${API_URL}/auth/register`, {
-    data: {
-      email: E2E_EMAIL,
-      password: E2E_PASSWORD,
-      firstName: 'E2E',
-      lastName: 'Test'
+
+  // Retry until the backend responds (up to 30s)
+  const deadline = Date.now() + 30_000
+  while (Date.now() < deadline) {
+    try {
+      const health = await ctx.get(`${API_URL.replace('/api', '/')}`)
+      if (health.ok()) break
+    } catch {
+      await new Promise(r => setTimeout(r, 1000))
     }
+  }
+
+  // Register e2e user — ignore 400 if already exists
+  await ctx.post(`${API_URL}/auth/register`, {
+    data: { email: E2E_EMAIL, password: E2E_PASSWORD, firstName: 'E2E', lastName: 'Test' }
   })
   await ctx.dispose()
 })
