@@ -46,7 +46,11 @@ test.describe('Authentification — parcours utilisateur complet', () => {
     await page.fill('input[placeholder="Jean"]', 'Marie')
     await page.fill('input[placeholder="Dupont"]', 'Curie')
     await page.fill('input[type="email"]', uniqueEmail)
-    await page.fill('input[type="password"]', E2E_PASSWORD)
+
+    // Two password fields with same placeholder — fill by index
+    const passwordInputs = page.locator('input[type="password"]')
+    await passwordInputs.nth(0).fill(E2E_PASSWORD)
+    await passwordInputs.nth(1).fill(E2E_PASSWORD)
 
     await page.click('button[type="submit"]')
     await page.waitForURL(/dashboard/, { timeout: 15000 })
