@@ -8,7 +8,10 @@
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "nuxt": "^3.11.2",
@@ -18,7 +21,14 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.12.0",
     "@pinia/nuxt": "^0.5.1",
+    "@playwright/test": "^1.60.0",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vitest/coverage-v8": "^4.1.6",
+    "@vue/test-utils": "^2.4.10",
+    "axios": "^1.6.8",
+    "jsdom": "^29.1.1",
     "pinia": "^2.1.7",
-    "axios": "^1.6.8"
+    "playwright": "^1.60.0",
+    "vitest": "^4.1.6"
   }
 }
