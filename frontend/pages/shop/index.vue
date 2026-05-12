@@ -33,7 +33,7 @@
         </div>
 
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <ProductCard
+          <ShopProductCard
             v-for="product in productsStore.products"
             :key="product._id"
             :product="product"
